@@ -19,6 +19,7 @@ import TweetControl from './tweet-control';
 import { tweet2Markdown } from '@src/app/utils/export';
 import ScaleControl from './scale-control';
 import FontControl from './font-control';
+import moment from 'moment';
 
 
 interface PreviewToastProps {
@@ -190,7 +191,12 @@ export const PreviewToast: React.FC<PreviewToastProps> = ({ tweetInfo, tweetInfo
         }, 3000);
         const imageSrc = data.dataUrl;
         const link = document.createElement('a');
-        link.download = `${xName}.${selectedFormat || 'png'}`
+
+        //文件命名: x-card-${username}-${YYYYMMDDHHmmssSSS}
+        const now = new Date();
+        const timestamp = moment(now).format('YYYYMMDDHHmmssSSS');
+        const modifiedXName = `${xName}-${tweetInfo.username}-${timestamp}`;
+        link.download = `${modifiedXName}.${selectedFormat || 'png'}`
         link.href = imageSrc;
         link.click();
     }
